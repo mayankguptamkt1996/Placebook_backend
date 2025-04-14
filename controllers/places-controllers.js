@@ -145,7 +145,7 @@ const updatePlace = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ place: place });
+  res.status(200).json({ place: place.toObject({ getters: true }) });
 };
 
 const deletePlace = async (req, res, next) => {
