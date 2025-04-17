@@ -9,7 +9,6 @@ const path = require('path');
 const app = express();
 
 app.use(bodyParser.json());
-
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
