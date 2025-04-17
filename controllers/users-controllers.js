@@ -20,11 +20,8 @@ const getUsers = async (req, res, next) => {
 
 const signup = async(req, res, next) => {
   const errors = validationResult(req);
-  console.log(req.body);
-  console.log(errors);
   
   const { name, email, password } = req.body;
-  console.log(name);
 
   if (!errors.isEmpty()) {
     return next(
@@ -35,7 +32,7 @@ const signup = async(req, res, next) => {
 
   let existingUser
   try {
-    existingUser = await User.findOne({ email: email })
+    existingUser = await User.findOne({ email: email });
   } catch (err) {
     const error = new HttpError(
       'Signing up failed, please try again later.',
@@ -63,13 +60,14 @@ const signup = async(req, res, next) => {
     name,
     email,
     image: req.file.path,
-    password,
+    password: hashedPassword,
     places: []
   });
 
   try {
     await createdUser.save();
   } catch (err) {
+    console.log("catch");
     const error = new HttpError(
       'Signing up failed, please try again.',
       500
@@ -123,6 +121,7 @@ const login = async(req, res, next) => {
   let isValidPassword = false;
   try {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
+    console.log(password,"encrypte",existingUser.password);
   } catch (err) {
     const error = new HttpError(
       'Could not log you in, please check your credentials and try again.',
